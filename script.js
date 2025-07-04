@@ -14,16 +14,16 @@
   const btnDificil = document.getElementById('btnDificil');
 
   const palavrasNormais = [
-    { palavra: "GATO", imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/320px-Cat03.jpg" },
-    { palavra: "CACHORRO", imagem: "img/cachorro.png"},
-    { palavra: "SOL", imagem: "img/sol.png"},
-    { palavra: "MAÇÃ", imagem: "img/maçã.png"},
-    { palavra: "CELULAR", imagem: "img/celular.png"},
-    { palavra: "UVA", imagem: "img/uva.png"},
-    { palavra: "PEPINO", imagem: "img/pepino.png"},
-    { palavra: "BRÓCOLIS", imagem: "img/brócolis.png"},
-    { palavra: "LÁPIS", imagem: "img/lápis.png"},
-    { palavra: "AÇAÍ", imagem: "img/açaí.png"},
+    { palavra: "GATO", imagem: "img/gato.png" },
+    { palavra: "CACHORRO", imagem: "img/cachorro.png" },
+    { palavra: "SOL", imagem: "img/sol.png" },
+    { palavra: "MAÇÃ", imagem: "img/maçã.png" }, 
+    { palavra: "CELULAR", imagem: "img/celular.png" },
+    { palavra: "UVA", imagem: "img/uva.png" },
+    { palavra: "PEPINO", imagem: "img/pepino.png" },
+    { palavra: "BRÓCOLIS", imagem: "img/brócolis.png" },
+    { palavra: "LÁPIS", imagem: "img/lápis.png" },
+    { palavra: "AÇAI", imagem: "img/acaí.png" }
   ];
 
   const palavrasDificeis = [
@@ -31,7 +31,7 @@
     { palavra: "HIPOTENUSA", dicas: ["Lado mais longo do triângulo retângulo.", "É oposto ao ângulo reto.", "Usada no Teorema de Pitágoras.", "Não é um cateto."] },
     { palavra: "PSICANÁLISE", dicas: ["Método terapêutico de Freud.", "Estuda o inconsciente.", "Envolve interpretação dos sonhos.", "Foco na mente e comportamento."] },
     { palavra: "QUANTÍSTICO", dicas: ["Relacionado à física das partículas.", "Envolve energia em pacotes discretos.", "Fundamental para a mecânica quântica.", "Desafia a física clássica."] },
-    { palavra: "ANTICONSTITUCIONAL", dicas: ["Algo que vai contra a Constituição.", "Termo muito usado em direito.", "Referente a leis ou atos ilegais.", "Extremamente longo para uma palavra."] },
+    { palavra: "ANTICONSTITUCIONAL", dicas: ["Algo que vai contra a Constituição.", "Termo muito usado em direito.", "Referente a leis ou atos ilegais.", "Extremamente longo para uma palavra."] }
   ];
 
   let modoAtual = null;
@@ -51,10 +51,8 @@
 
   function criarLetras(palavra) {
     const letras = palavra.split('');
-    const containerWidth = circleContainer.clientWidth;
-
-    // Ajusta o raio do círculo baseado no tamanho do container (menor para telas pequenas)
-    const radius = containerWidth < 500 ? containerWidth / 2 - 40 : 180;
+    const minSize = Math.min(circleContainer.clientWidth, circleContainer.clientHeight);
+    const radius = minSize / 2 - 60; // raio menor p/ centralizar melhor
 
     const centerX = circleContainer.clientWidth / 2;
     const centerY = circleContainer.clientHeight / 2;
@@ -71,6 +69,8 @@
       div.style.top = `${y}px`;
       div.dataset.letra = letra;
       div.dataset.index = i;
+      div.style.position = 'absolute';
+      div.style.transform = 'translate(-50%, -50%)';
       circleContainer.appendChild(div);
 
       pontos.push({ x, y, letra, element: div });
@@ -80,7 +80,7 @@
   function limparJogo() {
     pontos.forEach(p => circleContainer.removeChild(p.element));
     pontos = [];
-    linhas.forEach(l => svg.removeChild(l));
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
     linhas = [];
     pathAtual = [];
     desenhando = false;
@@ -111,17 +111,9 @@
 
   function getEventPosition(event) {
     const rect = circleContainer.getBoundingClientRect();
-    if (event.touches) {
-      return {
-        x: event.touches[0].clientX - rect.left,
-        y: event.touches[0].clientY - rect.top
-      };
-    } else {
-      return {
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top
-      };
-    }
+    return event.touches
+      ? { x: event.touches[0].clientX - rect.left, y: event.touches[0].clientY - rect.top }
+      : { x: event.clientX - rect.left, y: event.clientY - rect.top };
   }
 
   function criarLinha(x1, y1, x2, y2) {
@@ -184,11 +176,9 @@
     }
   }
 
-  // Eventos de mouse e toque
   circleContainer.addEventListener('mousedown', e => iniciarDesenho(getEventPosition(e)));
   circleContainer.addEventListener('mousemove', e => moverDesenho(getEventPosition(e)));
   circleContainer.addEventListener('mouseup', finalizarDesenho);
-
   circleContainer.addEventListener('touchstart', e => {
     e.preventDefault();
     iniciarDesenho(getEventPosition(e));
@@ -210,6 +200,7 @@
       imagemAtual = palavrasNormais[indiceAtual].imagem;
       hintImage.style.display = 'block';
       hintImage.src = imagemAtual;
+      hintImage.onerror = () => hintImage.style.display = 'none';
       gameTitle.textContent = "Modo Normal - Fácil";
       hintContainer.style.display = 'none';
     } else {
@@ -218,13 +209,11 @@
       gameTitle.textContent = "Modo Difícil - Teste seu conhecimento";
       hintContainer.style.display = 'block';
       const dicas = palavrasDificeis[indiceAtual].dicas || [];
-      hintContainer.innerHTML = dicas.length > 0
-        ? dicas.slice(0, 4).map((dica, i) => `<div>${i + 1}. ${dica}</div>`).join('')
-        : "Sem dicas disponíveis.";
+      hintContainer.innerHTML = dicas.slice(0, 4).map((dica, i) => `<div>${i + 1}. ${dica}</div>`).join('');
     }
 
     criarLetras(palavraAtual);
-    ajustarSVG();
+    setTimeout(ajustarSVG, 50);
     wordDisplay.textContent = "";
     document.querySelector('.circuloback').style.display = 'block';
   }
