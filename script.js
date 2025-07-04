@@ -27,36 +27,11 @@
   ];
 
   const palavrasDificeis = [
-    { palavra: "METAMORFOSE", dicas: [
-      "Transformação completa de um organismo.",
-      "Associada a borboletas e anfíbios.",
-      "Envolve estágios como lagarta e pupa.",
-      "Muda a forma e função do corpo."
-    ]},
-    { palavra: "HIPOTENUSA", dicas: [
-      "Lado mais longo do triângulo retângulo.",
-      "É oposto ao ângulo reto.",
-      "Usada no Teorema de Pitágoras.",
-      "Não é um cateto."
-    ]},
-    { palavra: "PSICANÁLISE", dicas: [
-      "Método terapêutico de Freud.",
-      "Estuda o inconsciente.",
-      "Envolve interpretação dos sonhos.",
-      "Foco na mente e comportamento."
-    ]},
-    { palavra: "QUANTÍSTICO", dicas: [
-      "Relacionado à física das partículas.",
-      "Envolve energia em pacotes discretos.",
-      "Fundamental para a mecânica quântica.",
-      "Desafia a física clássica."
-    ]},
-    { palavra: "ANTICONSTITUCIONAL", dicas: [
-      "Algo que vai contra a Constituição.",
-      "Termo muito usado em direito.",
-      "Referente a leis ou atos ilegais.",
-      "Extremamente longo para uma palavra."
-    ]},
+    { palavra: "METAMORFOSE", dicas: ["Transformação completa de um organismo.", "Associada a borboletas e anfíbios.", "Envolve estágios como lagarta e pupa.", "Muda a forma e função do corpo."] },
+    { palavra: "HIPOTENUSA", dicas: ["Lado mais longo do triângulo retângulo.", "É oposto ao ângulo reto.", "Usada no Teorema de Pitágoras.", "Não é um cateto."] },
+    { palavra: "PSICANÁLISE", dicas: ["Método terapêutico de Freud.", "Estuda o inconsciente.", "Envolve interpretação dos sonhos.", "Foco na mente e comportamento."] },
+    { palavra: "QUANTÍSTICO", dicas: ["Relacionado à física das partículas.", "Envolve energia em pacotes discretos.", "Fundamental para a mecânica quântica.", "Desafia a física clássica."] },
+    { palavra: "ANTICONSTITUCIONAL", dicas: ["Algo que vai contra a Constituição.", "Termo muito usado em direito.", "Referente a leis ou atos ilegais.", "Extremamente longo para uma palavra."] },
   ];
 
   let modoAtual = null;
@@ -130,12 +105,19 @@
     return maisProxima;
   }
 
-  function posicaoMouse(event) {
+  function getEventPosition(event) {
     const rect = circleContainer.getBoundingClientRect();
-    return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
-    };
+    if (event.touches) {
+      return {
+        x: event.touches[0].clientX - rect.left,
+        y: event.touches[0].clientY - rect.top
+      };
+    } else {
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
   }
 
   function criarLinha(x1, y1, x2, y2) {
@@ -151,39 +133,7 @@
     return linha;
   }
 
-  function iniciarJogo() {
-    limparJogo();
-    let palavraAtual, imagemAtual;
-    if (modoAtual === 'normal') {
-      palavraAtual = palavrasNormais[indiceAtual].palavra;
-      imagemAtual = palavrasNormais[indiceAtual].imagem;
-      hintImage.style.display = 'block';
-      hintImage.src = imagemAtual;
-      gameTitle.textContent = "Modo Normal - Fácil";
-      hintContainer.style.display = 'none';
-    } else {
-      palavraAtual = palavrasDificeis[indiceAtual].palavra;
-      hintImage.style.display = 'none';
-      gameTitle.textContent = "Modo Difícil - Teste seu conhecimento";
-      hintContainer.style.display = 'block';
-      const dicas = palavrasDificeis[indiceAtual].dicas || [];
-      if (dicas.length > 0) {
-        hintContainer.innerHTML = dicas.slice(0, 4).map((dica, i) => `<div>${i + 1}. ${dica}</div>`).join('');
-      } else {
-        hintContainer.innerHTML = "Sem dicas disponíveis.";
-      }
-    }
-    criarLetras(palavraAtual);
-    ajustarSVG();
-    wordDisplay.textContent = "";
-
-    // Mostrar o círculo de fundo
-    document.querySelector('.circuloback').style.display = 'block';
-  }
-
-  // Eventos do jogo
-  circleContainer.addEventListener('mousedown', (e) => {
-    const pos = posicaoMouse(e);
+  function iniciarDesenho(pos) {
     const ponto = detectarMaisProxima(pos.x, pos.y);
     if (ponto) {
       desenhando = true;
@@ -192,11 +142,10 @@
       wordDisplay.textContent = ponto.letra;
       linhaAtual = criarLinha(ponto.x, ponto.y, ponto.x, ponto.y);
     }
-  });
+  }
 
-  circleContainer.addEventListener('mousemove', (e) => {
+  function moverDesenho(pos) {
     if (!desenhando || !ultimoPonto) return;
-    const pos = posicaoMouse(e);
     linhaAtual.setAttribute('x2', pos.x);
     linhaAtual.setAttribute('y2', pos.y);
     const pontoAtual = detectarMaisProxima(pos.x, pos.y);
@@ -208,9 +157,9 @@
       linhaAtual = criarLinha(pontoAtual.x, pontoAtual.y, pontoAtual.x, pontoAtual.y);
       wordDisplay.textContent = pathAtual.map(p => p.letra).join('');
     }
-  });
+  }
 
-  circleContainer.addEventListener('mouseup', () => {
+  function finalizarDesenho() {
     if (!desenhando) return;
     desenhando = false;
     if (linhaAtual) {
@@ -229,18 +178,52 @@
       linhas = [];
       pathAtual = [];
     }
+  }
+
+  // Eventos de mouse e toque
+  circleContainer.addEventListener('mousedown', e => iniciarDesenho(getEventPosition(e)));
+  circleContainer.addEventListener('mousemove', e => moverDesenho(getEventPosition(e)));
+  circleContainer.addEventListener('mouseup', finalizarDesenho);
+
+  circleContainer.addEventListener('touchstart', e => {
+    e.preventDefault();
+    iniciarDesenho(getEventPosition(e));
+  });
+  circleContainer.addEventListener('touchmove', e => {
+    e.preventDefault();
+    moverDesenho(getEventPosition(e));
+  });
+  circleContainer.addEventListener('touchend', e => {
+    e.preventDefault();
+    finalizarDesenho();
   });
 
-  circleContainer.addEventListener('mouseleave', () => {
-    if (desenhando) {
-      desenhando = false;
-      if (linhaAtual) {
-        svg.removeChild(linhaAtual);
-        linhas.pop();
-        linhaAtual = null;
-      }
+  function iniciarJogo() {
+    limparJogo();
+    let palavraAtual, imagemAtual;
+    if (modoAtual === 'normal') {
+      palavraAtual = palavrasNormais[indiceAtual].palavra;
+      imagemAtual = palavrasNormais[indiceAtual].imagem;
+      hintImage.style.display = 'block';
+      hintImage.src = imagemAtual;
+      gameTitle.textContent = "Modo Normal - Fácil";
+      hintContainer.style.display = 'none';
+    } else {
+      palavraAtual = palavrasDificeis[indiceAtual].palavra;
+      hintImage.style.display = 'none';
+      gameTitle.textContent = "Modo Difícil - Teste seu conhecimento";
+      hintContainer.style.display = 'block';
+      const dicas = palavrasDificeis[indiceAtual].dicas || [];
+      hintContainer.innerHTML = dicas.length > 0
+        ? dicas.slice(0, 4).map((dica, i) => `<div>${i + 1}. ${dica}</div>`).join('')
+        : "Sem dicas disponíveis.";
     }
-  });
+
+    criarLetras(palavraAtual);
+    ajustarSVG();
+    wordDisplay.textContent = "";
+    document.querySelector('.circuloback').style.display = 'block';
+  }
 
   btnNormal.addEventListener('click', () => {
     modoAtual = 'normal';
@@ -270,9 +253,7 @@
   });
 
   backBtn.addEventListener('click', () => {
-    // Esconder o círculo de fundo ao voltar
     document.querySelector('.circuloback').style.display = 'none';
-
     menu.style.display = 'block';
     gameContainer.style.display = 'none';
     limparJogo();
