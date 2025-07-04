@@ -15,15 +15,15 @@
 
   const palavrasNormais = [
     { palavra: "GATO", imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/320px-Cat03.jpg" },
-    { palavra: "CACHORRO", imagem: null},
-    { palavra: "SOL", imagem: null},
-    { palavra: "MAÇÃ", imagem: null},
-    { palavra: "CELULAR", imagem: null},
-    { palavra: "UVA", imagem: null},
-    { palavra: "PEPINO", imagem: null},
-    { palavra: "BRÓCOLIS", imagem: null},
-    { palavra: "LÁPIS", imagem: null},
-    { palavra: "AÇAÍ", imagem: null},
+    { palavra: "CACHORRO", imagem: "img/cachorro.png"},
+    { palavra: "SOL", imagem: "img/sol.png"},
+    { palavra: "MAÇÃ", imagem: "img/maçã.png"},
+    { palavra: "CELULAR", imagem: "img/celular.png"},
+    { palavra: "UVA", imagem: "img/uva.png"},
+    { palavra: "PEPINO", imagem: "img/pepino.png"},
+    { palavra: "BRÓCOLIS", imagem: "img/brócolis.png"},
+    { palavra: "LÁPIS", imagem: "img/lápis.png"},
+    { palavra: "AÇAÍ", imagem: "img/açaí.png"},
   ];
 
   const palavrasDificeis = [
