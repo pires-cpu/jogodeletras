@@ -222,3 +222,59 @@ svg#lineCanvas {
   text-align: left;
   max-width: 550px;
 }
+
+/* RESPONSIVIDADE PARA CELULARES */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .logo, #Logo {
+    width: 80%;
+    max-width: 250px;
+    height: auto;
+  }
+
+  .circle-container,
+  .circuloback {
+    width: 90vw;
+    height: 90vw;
+  }
+
+  .letra {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  .hint-image {
+    width: 90%;
+    height: auto;
+  }
+
+  .word-display {
+    font-size: 20px;
+    letter-spacing: 4px;
+  }
+
+  button,
+  #nextWordBtn,
+  #backBtn {
+    width: 90%;
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  #hintContainer {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .button-container {
+    gap: 10px;
+  }
+}
