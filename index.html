@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogo Conectar Letras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="menu">
+    <!-- Caminho ajustado para a pasta img/ -->
+    <img src="img/Imagem Compartilhada.png" alt="Logo do jogo" id="Logo">
+    <h1>Escolha o modo do jogo</h1> <br> <br>
+    <button id="btnNormal">Modo Normal (Fácil)</button>
+    <button id="btnDificil">Modo Difícil (Adultos)</button>
+  </div>
+
+  <div id="gameContainer">
+    <h1 id="gameTitle">Jogo</h1>
+    <img id="hintImage" class="hint-image" alt="" />
+    <div id="wordDisplay" class="word-display"></div>
+    <div id="hintContainer"></div>
+
+    <div id="circleContainer" class="circle-container">
+      <div class="circuloback"></div>
+      <svg id="lineCanvas"></svg>
+    </div>
+
+    <div class="button-container">
+      <button id="nextWordBtn" style="display: none;">Próxima Palavra</button>
+      <button id="backBtn">Voltar ao Menu</button>
+    </div>
+  </div>
+
+  <div class="diagonal-gradient"></div>
+  <script src="script.js"></script>
+</body>
+</html>
