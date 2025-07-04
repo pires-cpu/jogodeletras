@@ -280,7 +280,7 @@ svg#lineCanvas {
 }
 @media (max-width: 768px) {
   body {
-    padding: 10px;
+    padding: 5px;
   }
 
   h1 {
@@ -311,7 +311,7 @@ svg#lineCanvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: relative;
     transform: translate(-50%, -50%);
   }
 

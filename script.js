@@ -51,7 +51,11 @@
 
   function criarLetras(palavra) {
     const letras = palavra.split('');
-    const radius = 180;
+    const containerWidth = circleContainer.clientWidth;
+
+    // Ajusta o raio do círculo baseado no tamanho do container (menor para telas pequenas)
+    const radius = containerWidth < 500 ? containerWidth / 2 - 40 : 180;
+
     const centerX = circleContainer.clientWidth / 2;
     const centerY = circleContainer.clientHeight / 2;
 
