@@ -23,7 +23,7 @@
     { palavra: "PEPINO", imagem: "img/pepino.png" },
     { palavra: "BRÓCOLIS", imagem: "img/brócolis.png" },
     { palavra: "LÁPIS", imagem: "img/lápis.png" },
-    { palavra: "AÇAI", imagem: "img/acaí.png" }
+    { palavra: "AÇAI", imagem: "img/açaí.png" }
   ];
 
   const palavrasDificeis = [
