@@ -31,7 +31,7 @@
     { palavra: "HIPOTENUSA", dicas: ["Lado mais longo do triângulo retângulo.", "É oposto ao ângulo reto.", "Usada no Teorema de Pitágoras.", "Não é um cateto."] },
     { palavra: "PSICANÁLISE", dicas: ["Método terapêutico de Freud.", "Estuda o inconsciente.", "Envolve interpretação dos sonhos.", "Foco na mente e comportamento."] },
     { palavra: "QUANTÍSTICO", dicas: ["Relacionado à física das partículas.", "Envolve energia em pacotes discretos.", "Fundamental para a mecânica quântica.", "Desafia a física clássica."] },
-    { palavra: "ANTICONSTITUCIONAL", dicas: ["Algo que vai contra a Constituição.", "Termo muito usado em direito.", "Referente a leis ou atos ilegais.", "Extremamente longo para uma palavra."] }
+    { palavra: "EXCEÇÃO", dicas: ["condição ou situação privilegiada.", "desvio de uma regra ou de um padrão.", "Algo ou alguém excluído da maioria, que não pertence ao todo."] }
   ];
 
   let modoAtual = null;
