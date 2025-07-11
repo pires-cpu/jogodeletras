@@ -122,7 +122,7 @@
     linha.setAttribute('y1', y1);
     linha.setAttribute('x2', x2);
     linha.setAttribute('y2', y2);
-    linha.setAttribute('stroke', '#333');
+    linha.setAttribute('stroke', 'white');
     linha.setAttribute('stroke-width', '4');
     svg.appendChild(linha);
     linhas.push(linha);
