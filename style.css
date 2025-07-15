@@ -312,7 +312,8 @@ svg#lineCanvas {
     align-items: center;
     justify-content: center;
     position: absolute;
-    transform: translate(-50%, -50%);
+    cursor: pointer;
+    user-select: none;
   }
 
   .hint-image {

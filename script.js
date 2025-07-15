@@ -52,7 +52,7 @@
   function criarLetras(palavra) {
     const letras = palavra.split('');
     const minSize = Math.min(circleContainer.clientWidth, circleContainer.clientHeight);
-    const radius = minSize / 2 - 60; // raio menor p/ centralizar melhor
+    const radius = minSize / 2 - 60; 
 
     const centerX = circleContainer.clientWidth / 2;
     const centerY = circleContainer.clientHeight / 2;
